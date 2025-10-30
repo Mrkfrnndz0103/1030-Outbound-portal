@@ -1,12 +1,14 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AppSidebar } from "@/components/AppSidebar";
+import { AnimatePresence, motion } from "framer-motion";
 import NotFound from "@/pages/not-found";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
@@ -15,21 +17,99 @@ import PreAlertDatabase from "@/pages/PreAlertDatabase";
 import VerificationFlow from "@/pages/VerificationFlow";
 import HubEmailList from "@/pages/HubEmailList";
 
+const pageVariants = {
+  initial: { opacity: 0, x: -10 },
+  enter: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 10 }
+};
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/" component={Dashboard} />
-      <Route path="/submit" component={SubmitReport} />
-      <Route path="/database" component={PreAlertDatabase} />
-      <Route path="/verify" component={VerificationFlow} />
-      <Route path="/hub-emails" component={HubEmailList} />
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait">
+      <Switch>
+        <Route path="/login">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <Login />
+          </motion.div>
+        </Route>
+        <Route path="/">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <Dashboard />
+          </motion.div>
+        </Route>
+        <Route path="/submit">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <SubmitReport />
+          </motion.div>
+        </Route>
+        <Route path="/database">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <PreAlertDatabase />
+          </motion.div>
+        </Route>
+        <Route path="/verify">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <VerificationFlow />
+          </motion.div>
+        </Route>
+        <Route path="/hub-emails">
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <HubEmailList />
+          </motion.div>
+        </Route>
+        <Route>
+          <motion.div
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <NotFound />
+          </motion.div>
+        </Route>
+      </Switch>
+    </AnimatePresence>
   );
 }
 
-function App() {
+export default function App() {
   const style = {
     "--sidebar-width": "20rem",
     "--sidebar-width-icon": "4rem",
@@ -60,8 +140,9 @@ function App() {
           <Toaster />
         </TooltipProvider>
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
 
-export default App;
+
